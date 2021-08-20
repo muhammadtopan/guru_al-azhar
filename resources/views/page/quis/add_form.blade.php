@@ -32,19 +32,19 @@
                         <div class="form-group  col-md-6">
                             <label>Kelas</label>
                             <select name="id_kelas" id="id_kelas"
-                                class="form-control @error('id_kelas') {{ 'is-invalid' }} @enderror">
+                                class="form-control @error('id_kelas') {{ 'is-invalid' }} @enderror" >
                                 <option value="">-Pilih-</option>
                                 @foreach($kelas as $no => $kelas)
                                     <option value="{{ $kelas->id_kelas }}">
                                     {{ $kelas->nama_kelas }}</option>
                                 @endforeach
                             </select>
-                            @if(isset($quis))
+
                             <script>
                                 document.getElementById('id_kelas').value =
-                                    '<?php echo $quis->id_kelas ?>'
+                                    '<?= session()->get('kelas_x'); ?>'
                             </script>
-                            @endif
+
                             @error('id_kelas')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -64,12 +64,10 @@
                                 {{ $pelajaran->nama_pelajaran }}</option>
                             @endforeach
                         </select>
-                        @if(isset($quis))
                         <script>
                             document.getElementById('id_pelajaran').value =
-                                '<?php echo $quis->id_pelajaran ?>'
+                                    '<?= session()->get('pelajaran_x'); ?>'
                         </script>
-                        @endif
                         @error('id_pelajaran')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -96,6 +94,7 @@
                 <div class="border-top">
                     <div class="card-body">
                         <button type="submit" class="btn btn-info">Add</button>
+                        <!-- <button class="btn btn-warning" type="button" onclick="window.history.back()">Cancel</button> -->
                         <a href="{{route('quis')}}" class="btn btn-success" >Done</a>
                     </div>
                 </div>

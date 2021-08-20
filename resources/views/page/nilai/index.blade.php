@@ -20,15 +20,30 @@
 <!-- /.content-header -->
 <div class="container-fluid">
     <div class="card">
-    
+
     <div class="alert alert-success" style="display:none" id="message">
         <strong>{{ session()->get('message') }}</strong>
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
-    
+
         <div class="card-body">
             <h5 class="card-title">
                 <a href="{{ route('nilai.create') }}" class="btn btn-secondary btn-sm"><i class="fa fa-plus"></i> Add</a>
+                <form action="{{route('nilai.cari')}}" method="POST">
+                    @csrf
+                <div class="row">
+                        <div class="col-lg-5">
+                        <input type="date" name="tanggal_awal" class="form-control">
+                        </div>
+                        <div class="col-lg-5">
+                        <input type="date" name="tanggal_akhir" class="form-control">
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="submit" class="btn btn-success">Cari</button>
+                        </div>
+                    </div>
+                    </form>
+                </div>
             </h5>
             <div class="table-responsive">
                 <table id="zero_config" class="table table-striped table-bordered">

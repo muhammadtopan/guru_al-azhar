@@ -18,14 +18,21 @@ class QuisController extends Controller
         $quis = DB::table('tb_quis')
                 ->join('tb_pelajaran', 'tb_pelajaran.id_pelajaran', '=', 'tb_quis.id_pelajaran')
                 ->join('tb_kelas', 'tb_kelas.id_kelas', '=', 'tb_quis.id_kelas')
-                ->select('tb_quis.*', 'tb_pelajaran.nama_pelajaran', 
+                ->select('tb_quis.*', 'tb_pelajaran.nama_pelajaran',
                         'tb_kelas.nama_kelas', 'tb_kelas.grup_kelas')
+                ->get();
+
+        $kelas = DB::table('tb_kelas')
+                ->get();
+        $pelajaran = DB::table('tb_pelajaran')
                 ->get();
 
         return view(
             'page/quis/index',
             [
-                'quis' => $quis
+                'quis' => $quis,
+                'kelas'=>$kelas,
+                'pelajaran'=>$pelajaran
             ]
         );
     }
@@ -39,19 +46,15 @@ class QuisController extends Controller
                 'url' => 'quis.store',
                 'pelajaran' => $pelajaran,
                 'kelas' => $kelas
-            ]
-        );
-    }
+                ]
+            );
+        }
     public function store(Request $request, Quis_Model $quis)
     {
         $validator = Validator::make($request->all(), [
             'id_kelas'     => 'required',
             'id_pelajaran' => 'required',
             'soal'         => 'required',
-            'pil_a'        => 'required',
-            'pil_b'        => 'required',
-            'pil_c'        => 'required',
-            'pil_d'        => 'required',
             'kunci'        => 'required',
         ]);
 
@@ -65,15 +68,11 @@ class QuisController extends Controller
             $quis->id_kelas = $request->input('id_kelas');
             $quis->id_pelajaran = $request->input('id_pelajaran');
             $quis->soal = $request->input('soal');
-            $quis->pil_a = $request->input('pil_a');
-            $quis->pil_b = $request->input('pil_b');
-            $quis->pil_c = $request->input('pil_c');
-            $quis->pil_d = $request->input('pil_d');
             $quis->kunci = $request->input('kunci');
             $quis->save();
 
             return redirect()
-                ->route('quis')
+                ->route('quis.addcreate')
                 ->with('message', 'Data berhasil ditambahkan');
         }
     }
@@ -99,10 +98,6 @@ class QuisController extends Controller
             'id_kelas'     => 'required',
             'id_pelajaran' => 'required',
             'soal'         => 'required',
-            'pil_a'        => 'required',
-            'pil_b'        => 'required',
-            'pil_c'        => 'required',
-            'pil_d'        => 'required',
             'kunci'        => 'required',
         ]);
 
@@ -116,10 +111,6 @@ class QuisController extends Controller
             $quis->id_kelas = $request->input('id_kelas');
             $quis->id_pelajaran = $request->input('id_pelajaran');
             $quis->soal = $request->input('soal');
-            $quis->pil_a = $request->input('pil_a');
-            $quis->pil_b = $request->input('pil_b');
-            $quis->pil_c = $request->input('pil_c');
-            $quis->pil_d = $request->input('pil_d');
             $quis->kunci = $request->input('kunci');
             $quis->save();
 
@@ -136,4 +127,85 @@ class QuisController extends Controller
             ->route('quis')
             ->with('message', 'Data berhasil dihapus');
     }
+
+    public function cariQuis(Request $request){
+
+        $cari_kelas = $request->cari_kelas;
+        $cari_matpel = $request->cari_matpel;
+        // dd($request->all());
+
+        $quis = DB::table('tb_quis')
+                ->join('tb_kelas', 'tb_kelas.id_kelas', '=', 'tb_quis.id_kelas')
+                ->join('tb_pelajaran', 'tb_pelajaran.id_pelajaran', '=', 'tb_quis.id_pelajaran')
+                ->where('tb_pelajaran.id_pelajaran','=',$cari_matpel)
+                ->where('tb_kelas.id_kelas','=',$cari_kelas)
+                ->select('tb_quis.*', 'tb_pelajaran.nama_pelajaran',
+                        'tb_kelas.nama_kelas', 'tb_kelas.grup_kelas')
+                ->get();
+        $kelas = DB::table('tb_kelas')->get();
+        $pelajaran = DB::table('tb_pelajaran')->get();
+
+        return view(
+            'page/quis/index',
+            [
+                'quis' => $quis,
+                'kelas'=>$kelas,
+                'pelajaran'=>$pelajaran
+            ]
+        );
+
+    }
+
+    public function addCreate()
+    {
+        $pelajaran = Pelajaran_Model::all();
+        $kelas = Kelas_Model::all();
+        return view(
+            'page/quis/add_form',
+            [
+                'url' => 'quis.addstore',
+                'pelajaran' => $pelajaran,
+                'kelas' => $kelas
+                ]
+            );
+        }
+
+        public function addStore(Request $request, Quis_Model $quis)
+        {
+            // dd($pelajaran_x);
+            // dd("x");
+            // dd($request->all());
+            $validator = Validator::make($request->all(), [
+                'id_kelas'     => 'required',
+                'id_pelajaran' => 'required',
+                'soal'         => 'required',
+                'kunci'        => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()
+                ->route('quis.addcreate')
+                ->withErrors($validator)
+                ->withInput();
+            } else {
+
+            $kelas_x =$request->id_kelas;
+            $pelajaran_x =$request->id_pelajaran;
+            $request->session()->put('kelas_x', $kelas_x);
+            $request->session()->put('pelajaran_x', $pelajaran_x);
+
+            $quis->id_kelas = $request->input('id_kelas');
+            $quis->id_pelajaran = $request->input('id_pelajaran');
+            $quis->soal = $request->input('soal');
+            $quis->kunci = $request->input('kunci');
+            $quis->save();
+
+
+            return redirect()
+            ->route('quis.addcreate')
+            ->with('message', 'Data berhasil ditambahkan');
+        }
+    }
+
+
 }

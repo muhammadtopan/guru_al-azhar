@@ -18,7 +18,7 @@ class NilaiController extends Controller
         $nilai = DB::table('tb_nilai')
                 ->join('tb_siswa', 'tb_siswa.id_siswa', '=', 'tb_nilai.id_siswa')
                 ->join('tb_pelajaran', 'tb_pelajaran.id_pelajaran', '=', 'tb_nilai.id_pelajaran')
-                ->select('tb_nilai.*', 'tb_siswa.nama_siswa', 
+                ->select('tb_nilai.*', 'tb_siswa.nama_siswa',
                         'tb_pelajaran.nama_pelajaran')
                 ->get();
         return view(
@@ -28,6 +28,7 @@ class NilaiController extends Controller
             ]
         );
     }
+
     public function create()
     {
         $siswa = Siswa_Model::all();
@@ -108,11 +109,32 @@ class NilaiController extends Controller
     }
 
     public function destroy(Nilai_Model $nilai)
-    {        
+    {
         $nilai->forceDelete();
         return redirect()
             ->route('nilai')
             ->with('message', 'Data berhasil dihapus');
+    }
+
+    public function cariNilai(Request $request){
+
+        $tanggal_awal = $request->tanggal_awal;
+        $tanggal_akhir = $request->tanggal_akhir;
+
+        $nilai = DB::table('tb_nilai')
+                ->join('tb_siswa', 'tb_siswa.id_siswa', '=', 'tb_nilai.id_siswa')
+                ->join('tb_pelajaran', 'tb_pelajaran.id_pelajaran', '=', 'tb_nilai.id_pelajaran')
+                ->whereBetween('tb_nilai.updated_at',array($tanggal_awal,$tanggal_akhir))
+                ->select('tb_nilai.*', 'tb_siswa.nama_siswa',
+                        'tb_pelajaran.nama_pelajaran')
+                ->get();
+        return view(
+            'page/nilai/index',
+            [
+                'nilai' => $nilai
+            ]
+        );
+
     }
 }
 

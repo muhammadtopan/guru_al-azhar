@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $user = new User_Model();
         $data_user = $user->CheckLoginAdmin($request->input("username"), $request->input("password"));
         // dd($data_user);
-        if ($data_user) 
+        if ($data_user)
         {
             $token = JwtHelper::BuatToken($data_user);
 
@@ -30,10 +30,11 @@ class DashboardController extends Controller
             $request->session()->put('level', $data_user->level);
             $request->session()->put('id_user', $data_user->id_user);
             $request->session()->put('token', $token);
+            
             // redirect ke halaman home
             return redirect('dashboard')->with("pesan", "Selamat datang " . session('username'));
-        } 
-        else 
+        }
+        else
         {
             return back()->with("pesan", "Username atau Password Salah");
         }
@@ -43,7 +44,7 @@ class DashboardController extends Controller
     {
         return view('auth/register');
     }
-    
+
     public function register_guru()
     {
         return view('auth/register_guru');
@@ -58,7 +59,7 @@ class DashboardController extends Controller
         $notelp = '0238423742';
         $pwd = Hash::make($password);
 
-        
+
             $data = array(
                 'username' => $username,
                 'password' => $pwd,
@@ -68,14 +69,14 @@ class DashboardController extends Controller
             DB::table('tb_user')->insert($data);
             return redirect('/')->with("pesan", "Register Sukses");
     }
-    
+
     public function registerGuru(Request $r)
     {
         $username = $r->username;
         $password = $r->password;
         $pwd = Hash::make($password);
 
-        
+
             $data = array(
                 'username' => $username,
                 'password' => $pwd,

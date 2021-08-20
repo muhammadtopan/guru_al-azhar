@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['belum_login'])->group(function () {
+// Route::middleware(['belum_login'])->group(function () {
     // guru
     Route::get('guru', 'DashboardController@index')->name('guru');
     Route::get('regis_guru', 'DashboardController@register_guru')->name('regis_guru');
@@ -19,9 +19,9 @@ Route::middleware(['belum_login'])->group(function () {
 
     Route::get('/', 'DashboardController@index')->name('/');
     Route::post('aksilogin', 'DashboardController@loginAdmin')->name('aksilogin');
-});
+// });
 
-Route::middleware(['sudah_login'])->group(function () {
+// Route::middleware(['sudah_login'])->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('tabel', 'DashboardController@tabel')->name('tabel');
     Route::get('logout', 'DashboardController@logout')->name('logout');
@@ -50,7 +50,7 @@ Route::middleware(['sudah_login'])->group(function () {
     Route::get('materi/{materi}', 'MateriController@edit')->name('materi.edit');
     Route::put('materi/{materi}', 'MateriController@update')->name('materi.update');
     Route::delete('materi/{materi}', 'MateriController@destroy')->name('materi.delete');
-    
+
     // tugas
     Route::get('tugas', 'TugasController@index')->name('tugas');
     Route::get('tugas/create', 'TugasController@create')->name('tugas.create');
@@ -58,7 +58,7 @@ Route::middleware(['sudah_login'])->group(function () {
     Route::get('tugas/{tugas}', 'TugasController@edit')->name('tugas.edit');
     Route::put('tugas/{tugas}', 'TugasController@update')->name('tugas.update');
     Route::delete('tugas/{tugas}', 'TugasController@destroy')->name('tugas.delete');
-    
+
     // kirim_tugas
     Route::get('kirim_tugas', 'KirimTugasController@index')->name('kirim_tugas');
     Route::get('kirim_tugas/create', 'KirimTugasController@create')->name('kirim_tugas.create');
@@ -66,14 +66,17 @@ Route::middleware(['sudah_login'])->group(function () {
     Route::get('kirim_tugas/{kirim_tugas}', 'KirimTugasController@edit')->name('kirim_tugas.edit');
     Route::put('kirim_tugas/{kirim_tugas}', 'KirimTugasController@update')->name('kirim_tugas.update');
     Route::delete('kirim_tugas/{kirim_tugas}', 'KirimTugasController@destroy')->name('kirim_tugas.delete');
-    
+
     // quis
     Route::get('quis', 'QuisController@index')->name('quis');
     Route::get('quis/create', 'QuisController@create')->name('quis.create');
+    Route::get('quis/addcreate', 'QuisController@addCreate')->name('quis.addcreate');
     Route::post('quis', 'QuisController@store')->name('quis.store');
+    Route::post('addstore/quis', 'QuisController@addStore')->name('quis.addstore');
     Route::get('quis/{quis}', 'QuisController@edit')->name('quis.edit');
     Route::put('quis/{quis}', 'QuisController@update')->name('quis.update');
     Route::delete('quis/{quis}', 'QuisController@destroy')->name('quis.delete');
+    Route::post('cariquis', 'QuisController@cariQuis')->name('quis.cari');
 
     // nilai
     Route::get('nilai', 'NilaiController@index')->name('nilai');
@@ -82,6 +85,7 @@ Route::middleware(['sudah_login'])->group(function () {
     Route::get('nilai/{nilai}', 'NilaiController@edit')->name('nilai.edit');
     Route::put('nilai/{nilai}', 'NilaiController@update')->name('nilai.update');
     Route::delete('nilai/{nilai}', 'NilaiController@destroy')->name('nilai.delete');
+    Route::post('carinilai', 'NilaiController@cariNilai')->name('nilai.cari');
 
     // izin
     Route::get('izin', 'IzinController@index')->name('izin');
@@ -91,4 +95,4 @@ Route::middleware(['sudah_login'])->group(function () {
     Route::put('izin/{izin}', 'IzinController@update')->name('izin.update');
     Route::delete('izin/{izin}', 'IzinController@destroy')->name('izin.delete');
 
-});
+// });

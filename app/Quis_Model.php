@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\SoftDeletes; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 class Quis_Model extends Model
@@ -14,10 +14,6 @@ class Quis_Model extends Model
         'id_kelas',
         'id_pelajaran',
         'soal',
-        'pil_a',
-        'pil_b',
-        'pil_c',
-        'pil_d',
         'kunci'
     ];
 }
