@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-// Route::middleware(['belum_login'])->group(function () {
+Route::middleware(['belum_login'])->group(function () {
     // guru
     Route::get('guru', 'DashboardController@index')->name('guru');
     Route::get('regis_guru', 'DashboardController@register_guru')->name('regis_guru');
@@ -19,9 +19,9 @@
 
     Route::get('/', 'DashboardController@index')->name('/');
     Route::post('aksilogin', 'DashboardController@loginAdmin')->name('aksilogin');
-// });
+});
 
-// Route::middleware(['sudah_login'])->group(function () {
+Route::middleware(['sudah_login'])->group(function () {
     Route::get('dashboard', 'DashboardController@dashboard')->name('dashboard');
     Route::get('tabel', 'DashboardController@tabel')->name('tabel');
     Route::get('logout', 'DashboardController@logout')->name('logout');
@@ -95,4 +95,4 @@
     Route::put('izin/{izin}', 'IzinController@update')->name('izin.update');
     Route::delete('izin/{izin}', 'IzinController@destroy')->name('izin.delete');
 
-// });
+});
